@@ -1,7 +1,7 @@
 //import { backGroundColor, friction, gravity, width, height } from "./world/config.json";
 export class Game {
     constructor() {
-        this.world = new World(rgba(40, 48, 56, 0.25), 0.9, 3, 72, 128);
+        this.world = new World("rgba(40, 48, 56, 0.25)", 0.9, 3, 72, 128);
     }
 
     update() {

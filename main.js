@@ -34,6 +34,8 @@ function update() {
 /// Listeners ///
 /////////////////
 
+window.addEventListener("keydown", (event) => controller.keyDownUp(event.type, event.key));
+window.addEventListener("keyup", (event) => controller.keyDownUp(event.type, event.key));
 window.addEventListener("resize", () => display.resize());
 
 //////////////////

@@ -20,7 +20,7 @@ export class Display {
             this.context.canvas.height
         );
     }
-    resize(event) {
+    resize() {
         this.context.canvas.width = document.documentElement.clientWidth - 32;
         this.context.canvas.height = document.documentElement.clientHeight - 32;
         this.render();

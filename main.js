@@ -4,10 +4,10 @@
 /// Import modules ///
 //////////////////////
 
-import { Display } from "./game modules/display.js";
-import { Controller } from "./game modules/controller.js";
-import { Game } from "./game modules/game.js";
-import { Engine } from "./game modules/engine.js";
+import { Display } from "./game_modules/display.js";
+import { Controller } from "./game_modules/controller.js";
+import { Game } from "./game_modules/game.js";
+import { Engine } from "./game_modules/engine.js";
 
 ///////////////
 /// Objects ///
@@ -23,7 +23,7 @@ const engine = new Engine(1000 / 30, render(), update());
 ////////////////
 
 function render() {
-    display.renderBackground("#00f");
+    display.fill("#00f");
     display.render();
 }
 function update() {
@@ -43,3 +43,5 @@ window.addEventListener("resize", () => display.resize());
 //////////////////
 
 display.resize();
+
+engine.start();

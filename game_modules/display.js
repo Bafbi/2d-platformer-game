@@ -4,9 +4,13 @@ export class Display {
         this.context = canvas.getContext("2d");
     }
 
-    renderBackground(color) {
+    fill(color) {
         this.buffer.fillStyle = color;
         this.buffer.fillRect(0, 0, this.buffer.canvas.width, this.buffer.canvas.height);
+    }
+    drawRectangle(x, y, width, height, color) {
+        this.buffer.fillStyle = color;
+        this.buffer.fillRect(Math.round(x), Math.round(y), width, height);
     }
 
     render() {

@@ -4,17 +4,17 @@ export class Controller {
         this.right = new ButtonInput();
         this.up = new ButtonInput();
     }
-    keyDownUp(type, key) {
+    keyDownUp(type, code) {
         let down = type == "keydown" ? true : false;
 
-        switch (key) {
-            case "q":
+        switch (code) {
+            case "KeyA":
                 this.left.getInput(down);
                 break;
-            case "d":
+            case "KeyD":
                 this.right.getInput(down);
                 break;
-            case "":
+            case "Space":
                 this.up.getInput(down);
         }
     }

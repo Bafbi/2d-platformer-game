@@ -12,6 +12,10 @@ export class Display {
         this.buffer.fillStyle = color;
         this.buffer.fillRect(Math.round(x), Math.round(y), width, height);
     }
+    drawText(text, x, y, color) {
+        this.buffer.fillStyle = color;
+        this.buffer.fillText(text, x, y);
+    }
 
     render() {
         this.context.drawImage(
@@ -27,9 +31,16 @@ export class Display {
         );
     }
 
-    resize() {
-        this.context.canvas.width = document.documentElement.clientWidth - 32;
-        this.context.canvas.height = document.documentElement.clientHeight - 32;
+    resize(width, height, height_width_ratio) {
+        if (height / width > height_width_ratio) {
+            this.context.canvas.height = width * height_width_ratio;
+            this.context.canvas.width = width;
+        } else {
+            this.context.canvas.height = height;
+            this.context.canvas.width = height / height_width_ratio;
+        }
+
+        this.context.imageSmoothingEnabled = false;
         this.render();
     }
 }

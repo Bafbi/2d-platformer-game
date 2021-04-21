@@ -23,10 +23,21 @@ const engine = new Engine(1000 / 30, render(), update());
 ////////////////
 
 function render() {
-    display.fill("#00f");
+    display.fill(game.world.background_color);
+    display.drawRectangle(game.world.player.x, game.world.player.y, game.world.player.width, game.world.player.height, game.world.player.color);
     display.render();
 }
 function update() {
+    if (controller.left.active) {
+        game.world.player.moveLeft();
+    }
+    if (controller.right.active) {
+        game.world.player.moveRight();
+    }
+    if (controller.up.active) {
+        game.world.player.jump();
+        controller.up.active = false;
+    }
     game.update;
 }
 

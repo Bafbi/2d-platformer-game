@@ -1,7 +1,9 @@
-//import { backGroundColor, friction, gravity, width, height } from "./world/config.json";
+import config from "./world/config.js";
+import mapFile from "./world/map.js";
+
 export class Game {
     constructor() {
-        this.world = new World("rgba(40, 48, 56, 0.25)", 0.9, 3, 128, 72);
+        this.world = new World(config.backGroundColor, config.friction, config.gravity);
     }
 
     update() {
@@ -9,14 +11,19 @@ export class Game {
     }
 }
 
+///////////////////
+/// Class World ///
+///////////////////
+
 class World {
-    constructor(backGroundColor, friction, gravity, width, height) {
+    constructor(backGroundColor, friction, gravity) {
         this.backGroundColor = backGroundColor;
         this.friction = friction;
         this.gravity = gravity;
-        this.width = width;
-        this.height = height;
-        this.player = new Player(50, 25, 16, 16);
+        this.map = new Map(mapFile);
+        this.height = this.map.tileSize * this.map.rows;
+        this.width = this.map.tileSize * this.map.columns;
+        this.player = new Player(50, 25, 12, 12);
     }
 
     collideEntity(entity) {
@@ -47,6 +54,23 @@ class World {
     }
 }
 
+/////////////////
+/// Class Map ///
+/////////////////
+
+class Map {
+    constructor(mapFile) {
+        this.columns = mapFile.columns;
+        this.rows = mapFile.rows;
+        this.tileSize = mapFile.tileSize;
+        this.map = mapFile.map;
+    }
+}
+
+////////////////////
+/// Class Entity ///
+////////////////////
+
 class Entity {
     constructor(x, y, height, width) {
         this.color = "#ff0000";
@@ -64,6 +88,11 @@ class Entity {
         this.y += this.motionY;
     }
 }
+
+//////////////////////////
+/// Class LivingEntity ///
+//////////////////////////
+
 class LivingEntity extends Entity {
     constructor(x, y, height, width) {
         super(x, y, height, width);
@@ -77,16 +106,21 @@ class LivingEntity extends Entity {
             }
 
             this.onGround = false;
-            this.motionY -= 20;
+            this.motionY -= 25;
         }
     }
     moveLeft() {
-        this.motionX -= 0.5;
+        this.motionX -= 0.8;
     }
     moveRight() {
-        this.motionX += 0.5;
+        this.motionX += 0.8;
     }
 }
+
+////////////////////
+/// Class Player ///
+////////////////////
+
 class Player extends LivingEntity {
     constructor(x, y, height, width) {
         super(x, y, height, width);

@@ -15,8 +15,10 @@ import { Engine } from "./game_modules/engine.js";
 
 function render() {
     display.fill(game.world.backGroundColor);
+    display.drawMap(game.world.map.map, game.world.map.columns);
     display.drawRectangle(game.world.player.x, game.world.player.y, game.world.player.width, game.world.player.height, game.world.player.color);
-    display.drawText(game.world.player.onGround, 5, 5, "#fff");
+    display.drawGrid(game.world.map.columns, game.world.map.rows, "rgba(40,20,80,0.25)");
+    //display.drawText(game.world.player.onGround, 2, 7, "#fff");
     display.render();
 }
 function update() {
@@ -58,6 +60,10 @@ window.addEventListener("resize", () =>
 display.buffer.canvas.height = game.world.height;
 display.buffer.canvas.width = game.world.width;
 
-display.resize(document.documentElement.clientWidth - 32, document.documentElement.clientHeight - 32, game.world.height / game.world.width);
+display.tileSheet.image.src = "./game_modules/texture/spritesheet.png";
 
-engine.start();
+display.tileSheet.image.onload = () => {
+    display.resize(document.documentElement.clientWidth - 32, document.documentElement.clientHeight - 32, game.world.height / game.world.width);
+
+    engine.start();
+};

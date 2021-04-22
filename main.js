@@ -17,7 +17,7 @@ function render() {
     display.fill(game.world.backGroundColor);
     display.drawMap(game.world.map.map, game.world.map.columns);
     display.drawRectangle(game.world.player.x, game.world.player.y, game.world.player.width, game.world.player.height, game.world.player.color);
-    display.drawGrid(game.world.map.columns, game.world.map.rows, "rgba(40,20,80,0.25)");
+    display.drawDevTools(game.world.map.columns, game.world.map.rows, "rgba(40,20,80,0.25)");
     //display.drawText(game.world.player.onGround, 2, 7, "#fff");
     display.render();
 }

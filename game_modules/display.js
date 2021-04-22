@@ -1,3 +1,5 @@
+import config from "./texture/config.js";
+
 export class Display {
     constructor(canvas) {
         this.buffer = document.createElement("canvas").getContext("2d");
@@ -25,6 +27,10 @@ export class Display {
         for (let rows = 0; rows < worldRows; rows++) {
             this.buffer.fillRect(0, (rows + 1) * this.tileSheet.tileSize - 1, worldColumns * this.tileSheet.tileSize, 2);
         }
+    }
+
+    drawDevTools(worldColumns, worldRows, color) {
+        if (config.grid) this.drawGrid(worldColumns, worldRows, color);
     }
 
     drawMap(map, columns) {

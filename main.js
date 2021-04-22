@@ -51,7 +51,7 @@ const engine = new Engine(1000 / 30, render, update);
 window.addEventListener("keydown", (event) => controller.keyDownUp(event.type, event.code));
 window.addEventListener("keyup", (event) => controller.keyDownUp(event.type, event.code));
 window.addEventListener("resize", () =>
-    display.resize(document.documentElement.clientWidth - 32, document.documentElement.clientHeight - 32, game.world.height / game.world.width)
+    display.resize(document.documentElement.clientWidth, document.documentElement.clientHeight, game.world.height / game.world.width)
 );
 
 //////////////////
@@ -63,7 +63,7 @@ display.buffer.canvas.width = game.world.width;
 display.tileSheet.image.src = "./game_modules/texture/spritesheet.png";
 
 display.tileSheet.image.onload = () => {
-    display.resize(document.documentElement.clientWidth - 32, document.documentElement.clientHeight - 32, game.world.height / game.world.width);
+    display.resize(document.documentElement.clientWidth, document.documentElement.clientHeight, game.world.height / game.world.width);
 
     engine.start();
 };

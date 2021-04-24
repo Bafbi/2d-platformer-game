@@ -24,7 +24,7 @@ class World {
         this.collider = new Collider(this.map);
         this.height = this.map.mapHeight;
         this.width = this.map.mapWidth;
-        this.player = new Player(50, 25, 12, 12);
+        this.player = new Player(20, 20, 12, 12);
     }
 
     update() {
@@ -85,6 +85,7 @@ class Collider {
         left = Math.floor(entity.getLeft() / this.map.tileSize);
         values = this.map.collisionRef[this.map.map[top * this.map.columns + left]];
         this.collide(values, entity, left * this.map.tileSize, top * this.map.tileSize);
+        //console.log(values);
 
         top = Math.floor(entity.getTop() / this.map.tileSize);
         right = Math.floor(entity.getRight() / this.map.tileSize);
@@ -95,6 +96,7 @@ class Collider {
         left = Math.floor(entity.getLeft() / this.map.tileSize);
         values = this.map.collisionRef[this.map.map[bottom * this.map.columns + left]];
         this.collide(values, entity, left * this.map.tileSize, bottom * this.map.tileSize);
+        //console.log(values);
 
         bottom = Math.floor(entity.getBottom() / this.map.tileSize);
         right = Math.floor(entity.getRight() / this.map.tileSize);
@@ -103,25 +105,27 @@ class Collider {
     }
 
     collide(values, entity, tileX, tileY) {
-        values.forEach((value) => {
-            //console.log(value);
-            if (value == "t") {
-                this.collidePlatformTop(entity, tileY);
-                return;
-            }
-            if (value == "b") {
-                this.collidePlatformBottom(entity, tileY + this.map.tileSize);
-                return;
-            }
-            if (value == "l") {
-                this.collidePlatformLeft(entity, tileX);
-                return;
-            }
-            if (value == "r") {
-                this.collidePlatformRight(entity, tileX + this.map.tileSize);
-                return;
-            }
-        });
+        //console.log(values);
+        if (values.length !== 0) {
+            //console.log(values);
+            values.forEach((value) => {
+                //console.log(value);
+                switch (value) {
+                    case "t":
+                        this.collidePlatformTop(entity, tileY);
+                        break;
+                    case "b":
+                        this.collidePlatformBottom(entity, tileY + this.map.tileSize);
+                        break;
+                    case "l":
+                        this.collidePlatformLeft(entity, tileX);
+                        break;
+                    case "r":
+                        this.collidePlatformRight(entity, tileX + this.map.tileSize);
+                        break;
+                }
+            });
+        }
     }
 
     collidePlatformTop(entity, tileTop) {
@@ -139,25 +143,24 @@ class Collider {
             //console.log("collide bottom");
             entity.setTop(tileBottom + 0.01);
             entity.motionY = 0;
-            entity.onGround = true;
             return true;
         }
         return false;
     }
     collidePlatformLeft(entity, tileLeft) {
         if (entity.getRight() > tileLeft && entity.getOldRight() <= tileLeft) {
+            //console.log("collide left");
             entity.setRight(tileLeft - 0.01);
-            entity.motionY = 0;
-            entity.onGround = true;
+            entity.motionX = 0;
             return true;
         }
         return false;
     }
     collidePlatformRight(entity, tileRight) {
         if (entity.getLeft() < tileRight && entity.getOldLeft() >= tileRight) {
+            console.log("collide right");
             entity.setLeft(tileRight + 0.01);
-            entity.motionY = 0;
-            entity.onGround = true;
+            entity.motionX = 0;
             return true;
         }
         return false;
@@ -183,6 +186,8 @@ class Entity {
     }
 
     update() {
+        this.oldX = this.x;
+        this.oldY = this.y;
         this.x += this.motionX;
         this.y += this.motionY;
     }
@@ -257,7 +262,7 @@ class LivingEntity extends Entity {
             }
 
             this.onGround = false;
-            this.motionY -= 25;
+            this.motionY -= 20;
         }
     }
     moveLeft() {

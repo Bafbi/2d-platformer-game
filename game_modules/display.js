@@ -16,8 +16,8 @@ export class Display {
         this.buffer.fillRect(Math.round(x), Math.round(y), width, height);
     }
     drawText(text, x, y, color) {
-        this.buffer.fillStyle = color;
-        this.buffer.fillText(text, x, y);
+        this.context.fillStyle = color;
+        this.context.fillText(text, x, y);
     }
     drawGrid(worldColumns, worldRows, color) {
         this.buffer.fillStyle = color;
@@ -28,9 +28,19 @@ export class Display {
             this.buffer.fillRect(0, (rows + 1) * this.tileSheet.tileSize - 1, worldColumns * this.tileSheet.tileSize, 2);
         }
     }
+    drawCollideTile(entity, color) {
+        this.drawRectangle(
+            Math.floor(entity.getLeft() / this.tileSheet.tileSize) * this.tileSheet.tileSize,
+            Math.floor(entity.getBottom() / this.tileSheet.tileSize) * this.tileSheet.tileSize,
+            this.tileSheet.tileSize,
+            this.tileSheet.tileSize,
+            color
+        );
+    }
 
-    drawDevTools(worldColumns, worldRows, color) {
+    drawDevTools(worldColumns, worldRows, entity, color) {
         if (config.grid) this.drawGrid(worldColumns, worldRows, color);
+        if (config.collideTile) this.drawCollideTile(entity, color);
     }
 
     drawMap(map, columns) {

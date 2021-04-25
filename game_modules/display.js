@@ -1,10 +1,11 @@
-import config from "./texture/config.js";
+import devTools from "./texture/devTools.js";
 
 export class Display {
     constructor(canvas) {
         this.buffer = document.createElement("canvas").getContext("2d");
         this.context = canvas.getContext("2d");
-        this.tileSheet = new TileSheet(16, 4);
+        this.tileSheet = new TileSheet(16, 5);
+        this.player = new Sprite(12);
     }
 
     fill(color) {
@@ -39,8 +40,8 @@ export class Display {
     }
 
     drawDevTools(worldColumns, worldRows, entity, color) {
-        if (config.grid) this.drawGrid(worldColumns, worldRows, color);
-        if (config.collideTile) this.drawCollideTile(entity, color);
+        if (devTools.grid) this.drawGrid(worldColumns, worldRows, color);
+        if (devTools.collideTile) this.drawCollideTile(entity, color);
     }
 
     drawMap(map, columns) {
@@ -65,6 +66,9 @@ export class Display {
                 );
             }
         }
+    }
+    drawPlayer(x, y) {
+        this.buffer.drawImage(this.player.image, 0, 0, this.player.tileSize, this.player.tileSize, x, y, this.player.tileSize, this.player.tileSize);
     }
 
     render() {
@@ -100,5 +104,11 @@ class TileSheet {
         this.image = new Image();
         this.tileSize = tile_size;
         this.columns = columns;
+    }
+}
+class Sprite {
+    constructor(tile_size) {
+        this.image = new Image();
+        this.tileSize = tile_size;
     }
 }

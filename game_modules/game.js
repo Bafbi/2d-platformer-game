@@ -1,5 +1,5 @@
 import config from "./world/config.js";
-import mapFile from "./world/map.js";
+import mapFile from "./world/map2.js";
 
 export class Game {
     constructor() {
@@ -67,19 +67,23 @@ class Collider {
             entity.setLeft(0);
             entity.motionX = 0;
         } else if (entity.getRight() > this.map.mapWidth) {
-            entity.setRight(this.map.mapWidth);
+            entity.setRight(this.map.mapWidth - 0.01);
             entity.motionX = 0;
         }
         if (entity.getTop() < 0) {
             entity.setTop(0);
             entity.motionY = 0;
         } else if (entity.getBottom() > this.map.mapHeight) {
-            entity.setBottom(this.map.mapHeight);
+            entity.setBottom(this.map.mapHeight - 0.01);
             entity.motionY = 0;
             entity.onGround = true;
         }
 
-        let top, left, right, bottom, values;
+        let top,
+            left,
+            right,
+            bottom,
+            values = [];
 
         top = Math.floor(entity.getTop() / this.map.tileSize);
         left = Math.floor(entity.getLeft() / this.map.tileSize);
@@ -106,7 +110,7 @@ class Collider {
 
     collide(values, entity, tileX, tileY) {
         //console.log(values);
-        if (values.length !== 0) {
+        if (values !== undefined && values.length !== 0) {
             //console.log(values);
             values.forEach((value) => {
                 //console.log(value);
@@ -158,7 +162,7 @@ class Collider {
     }
     collidePlatformRight(entity, tileRight) {
         if (entity.getLeft() < tileRight && entity.getOldLeft() >= tileRight) {
-            console.log("collide right");
+            //console.log("collide right");
             entity.setLeft(tileRight + 0.01);
             entity.motionX = 0;
             return true;
@@ -262,7 +266,7 @@ class LivingEntity extends Entity {
             }
 
             this.onGround = false;
-            this.motionY -= 20;
+            this.motionY -= 25;
         }
     }
     moveLeft() {

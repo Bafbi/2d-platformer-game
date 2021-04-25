@@ -16,7 +16,7 @@ import { Engine } from "./game_modules/engine.js";
 function render() {
     display.fill(game.world.backGroundColor);
     display.drawMap(game.world.map.map, game.world.map.columns);
-    display.drawRectangle(game.world.player.x, game.world.player.y, game.world.player.width, game.world.player.height, game.world.player.color);
+    display.drawPlayer(game.world.player.x, game.world.player.y);
     display.drawDevTools(game.world.map.columns, game.world.map.rows, game.world.player, "rgba(40,20,80,0.25)");
 
     display.render();
@@ -62,6 +62,7 @@ display.buffer.canvas.height = game.world.height;
 display.buffer.canvas.width = game.world.width;
 
 display.tileSheet.image.src = "./game_modules/texture/spritesheet.png";
+display.player.image.src = "./game_modules/texture/spriteplayer.png";
 
 display.tileSheet.image.onload = () => {
     display.resize(document.documentElement.clientWidth, document.documentElement.clientHeight, game.world.height / game.world.width);

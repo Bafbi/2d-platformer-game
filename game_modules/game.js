@@ -1,5 +1,5 @@
 import config from "./world/config.js";
-import mapFile from "./world/map2.js";
+import mapFile from "./world/map.js";
 
 export class Game {
     constructor() {

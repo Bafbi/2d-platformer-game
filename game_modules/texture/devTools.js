@@ -1,4 +1,4 @@
 export default {
-    grid: true,
-    collideTile: true,
+    grid: false,
+    collideTile: false,
 };

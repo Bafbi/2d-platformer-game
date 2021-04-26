@@ -24,15 +24,17 @@ class World {
         this.collider = new Collider(this.map);
         this.height = this.map.mapHeight;
         this.width = this.map.mapWidth;
-        this.player = new Player(20, 20, 12, 12);
+        this.player = new Player(20, 20, 12, 8);
     }
 
     update() {
-        this.player.motionY += this.gravity;
+        this.player.accelerationY += this.gravity;
         this.player.update();
 
         this.player.motionX *= this.friction;
         this.player.motionY *= this.friction;
+        this.player.accelerationX *= this.friction ** 1.8;
+        this.player.accelerationY *= this.friction ** 1.8;
         this.collider.collideEntity(this.player);
     }
 }
@@ -137,6 +139,7 @@ class Collider {
             //console.log("collide top");
             entity.setBottom(tileTop - 0.01);
             entity.motionY = 0;
+            entity.accelerationY = 0;
             entity.onGround = true;
             return true;
         }
@@ -147,6 +150,7 @@ class Collider {
             //console.log("collide bottom");
             entity.setTop(tileBottom + 0.01);
             entity.motionY = 0;
+            entity.accelerationY = 0;
             return true;
         }
         return false;
@@ -185,6 +189,8 @@ class Entity {
         this.oldY = y;
         this.motionX = 0;
         this.motionY = 0;
+        this.accelerationX = 0;
+        this.accelerationY = 0;
         this.height = height;
         this.width = width;
     }
@@ -192,6 +198,8 @@ class Entity {
     update() {
         this.oldX = this.x;
         this.oldY = this.y;
+        this.motionX += this.accelerationX;
+        this.motionY += this.accelerationY;
         this.x += this.motionX;
         this.y += this.motionY;
     }
@@ -266,14 +274,14 @@ class LivingEntity extends Entity {
             }
 
             this.onGround = false;
-            this.motionY -= 25;
+            this.accelerationY -= 11;
         }
     }
     moveLeft() {
-        this.motionX -= 0.8;
+        this.accelerationX -= 0.4;
     }
     moveRight() {
-        this.motionX += 0.8;
+        this.accelerationX += 0.4;
     }
 }
 

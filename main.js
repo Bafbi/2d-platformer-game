@@ -14,11 +14,11 @@ import { Engine } from "./game_modules/engine.js";
 ////////////////
 
 function render() {
-    display.fill(game.world.backGroundColor);
+    display.drawBackground(game.world.map.columns, game.world.map.rows);
     display.drawMap(game.world.map.map, game.world.map.columns);
     display.drawPlayer(game.world.player.x, game.world.player.y);
-    display.drawDevTools(game.world.map.columns, game.world.map.rows, game.world.player, "rgba(40,20,80,0.25)");
-
+    display.drawLightning(game.world.player.x, game.world.player.y, game.world.player.width, game.world.player.height);
+    display.drawDevTools(game.world.map.columns, game.world.map.rows, game.world.player, "rgba(40,20,80,0.5)");
     display.render();
     display.drawText(`X = ${Math.round(game.world.player.x)}  | Y = ${Math.round(game.world.player.y)}`, 2, 7, "#fff");
 }
@@ -60,11 +60,14 @@ window.addEventListener("resize", () =>
 //////////////////
 display.buffer.canvas.height = game.world.height;
 display.buffer.canvas.width = game.world.width;
+display.shaders.canvas.height = game.world.height * 2;
+display.shaders.canvas.width = game.world.width * 2;
 
+display.background.image.src = "./game_modules/texture/background.png";
 display.tileSheet.image.src = "./game_modules/texture/spritesheet.png";
 display.player.image.src = "./game_modules/texture/spriteplayer.png";
 
-display.tileSheet.image.onload = () => {
+display.background.image.onload = () => {
     display.resize(document.documentElement.clientWidth, document.documentElement.clientHeight, game.world.height / game.world.width);
 
     engine.start();

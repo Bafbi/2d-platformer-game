@@ -1,13 +1,16 @@
+import { Engine } from "./engine.js";
 import config from "./world/config.js";
 import mapFile from "./world/map.js";
 
 export class Game {
     constructor() {
         this.world = new World(config.backGroundColor, config.friction, config.gravity);
+        this.fire = new Annimation(6, 2);
     }
 
     update() {
         this.world.update();
+        this.fire.update();
     }
 }
 
@@ -24,7 +27,7 @@ class World {
         this.collider = new Collider(this.map);
         this.height = this.map.mapHeight;
         this.width = this.map.mapWidth;
-        this.player = new Player(20, 20, 12, 8);
+        this.player = new Player(20, 20, 12, 8, 0.7);
     }
 
     update() {
@@ -180,7 +183,7 @@ class Collider {
 ////////////////////
 
 class Entity {
-    constructor(x, y, height, width) {
+    constructor(x, y, height, width, lightPower) {
         this.color = "#ff0000";
         this.onGround = false;
         this.x = x;
@@ -193,6 +196,7 @@ class Entity {
         this.accelerationY = 0;
         this.height = height;
         this.width = width;
+        this.lightPower = lightPower;
     }
 
     update() {
@@ -262,8 +266,8 @@ class Entity {
 //////////////////////////
 
 class LivingEntity extends Entity {
-    constructor(x, y, height, width) {
-        super(x, y, height, width);
+    constructor(x, y, height, width, lightPower) {
+        super(x, y, height, width, lightPower);
     }
 
     jump() {
@@ -290,7 +294,29 @@ class LivingEntity extends Entity {
 ////////////////////
 
 class Player extends LivingEntity {
-    constructor(x, y, height, width) {
-        super(x, y, height, width);
+    constructor(x, y, height, width, lightPower) {
+        super(x, y, height, width, lightPower);
+    }
+}
+
+////////////////////////
+/// Class Annimation ///
+////////////////////////
+
+class Annimation {
+    constructor(frames, delays) {
+        this.delay = 0;
+        this.delays = delays;
+        this.frame = 0;
+        this.frames = frames;
+    }
+
+    update() {
+        this.delay += 1;
+        this.delay %= this.delays + 1;
+        if (this.delay == this.delays) {
+            this.frame += 1;
+            this.frame %= this.frames;
+        }
     }
 }

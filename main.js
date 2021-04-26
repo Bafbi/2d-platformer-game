@@ -16,8 +16,8 @@ import { Engine } from "./game_modules/engine.js";
 function render() {
     display.drawBackground(game.world.map.columns, game.world.map.rows);
     display.drawMap(game.world.map.map, game.world.map.columns);
-    display.drawPlayer(game.world.player.x, game.world.player.y);
-    display.drawLightning(game.world.player.x, game.world.player.y, game.world.player.width, game.world.player.height);
+    display.drawPlayer(game.world.player.x, game.world.player.y, game.fire.frame);
+    display.drawLightning(game.world.player);
     display.drawDevTools(game.world.map.columns, game.world.map.rows, game.world.player, "rgba(40,20,80,0.5)");
     display.render();
     display.drawText(`X = ${Math.round(game.world.player.x)}  | Y = ${Math.round(game.world.player.y)}`, 2, 7, "#fff");
@@ -66,6 +66,7 @@ display.shaders.canvas.width = game.world.width * 2;
 display.background.image.src = "./game_modules/texture/background.png";
 display.tileSheet.image.src = "./game_modules/texture/spritesheet.png";
 display.player.image.src = "./game_modules/texture/spriteplayer.png";
+display.fire.image.src = "./game_modules/texture/fire.png";
 
 display.background.image.onload = () => {
     display.resize(document.documentElement.clientWidth, document.documentElement.clientHeight, game.world.height / game.world.width);

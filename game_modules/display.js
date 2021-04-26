@@ -7,6 +7,7 @@ export class Display {
         this.shaders = document.createElement("canvas").getContext("2d");
         this.tileSheet = new TileSheet(16, 5);
         this.player = new Sprite(12);
+        this.fire = new Sprite(16);
         this.background = new TileSheet(32, 1);
     }
 
@@ -46,7 +47,9 @@ export class Display {
         if (devTools.collideTile) this.drawCollideTile(entity, color);
     }
 
-    drawLightning(x, y, spriteWidth, spriteHeight) {
+    drawLightning(entity) {
+        const power = entity.lightPower;
+        //console.log(power);
         this.shaders.clearRect(0, 0, this.shaders.canvas.width, this.shaders.canvas.height);
         /*for (let radius = 20; radius < this.shaders.canvas.width * 1.5; radius++) {
             this.shaders.globalAlpha = 0.004 * radius;
@@ -57,21 +60,28 @@ export class Display {
 
         this.shaders.fillStyle = "rgba(0,0,0,1)";
         this.shaders.fillRect(0, 0, this.shaders.canvas.width, this.shaders.canvas.height);
-        for (let radius = 200, opacity = 0.95; opacity >= 0; radius -= 5, opacity -= Math.random() * (0.043 - 0.035) + 0.035) {
-            this.shaders.globalCompositeOperation = "xor";
+        for (
+            let radius = 300 * power, opacity = 0.95, white = 0;
+            opacity > 0.1 && radius > 10;
+            radius -= 5,
+                white = Math.pow(255, 1 - opacity) * (Math.random() * (1.6 - 1.4) + 1.4),
+                opacity -= (Math.random() * (0.033 - 0.025) + 0.025) / power / 2
+        ) {
+            this.shaders.globalCompositeOperation = "destination-out";
             this.shaders.beginPath();
             this.shaders.fillStyle = `rgba(15,5,10,1)`;
-            this.shaders.arc((x + spriteWidth / 2) * 2, (y + spriteHeight / 2) * 2, radius, 0, 2 * Math.PI);
+            this.shaders.arc((entity.x + entity.width / 2) * 2, (entity.y + entity.height / 2) * 2, radius, 0, 2 * Math.PI);
             this.shaders.fill();
             this.shaders.globalCompositeOperation = "luminosity";
-            this.shaders.fillStyle = `rgba(1,0,0,${opacity})`;
-            this.shaders.arc((x + spriteWidth / 2) * 2, (y + spriteHeight / 2) * 2, radius + 20, 0, 2 * Math.PI);
+            this.shaders.fillStyle = `rgba(${white},${white / 1.6},${white / 3},${opacity})`;
+            this.shaders.arc((entity.x + entity.width / 2) * 2, (entity.y + entity.height / 2) * 2, radius + 10, 0, 2 * Math.PI);
             this.shaders.fill();
+            //console.log(opacity);
+            //console.log(white);
         }
-        this.shaders.globalCompositeOperation = "xor";
-        this.shaders.beginPath();
-        this.shaders.fillStyle = `rgba(15,5,10,1)`;
-        this.shaders.arc((x + spriteWidth / 2) * 2, (y + spriteHeight / 2) * 2, 15, 0, 2 * Math.PI);
+        this.shaders.globalCompositeOperation = "luminosity";
+        this.shaders.fillStyle = `rgba(255,80,30,0.1)`;
+        this.shaders.arc((entity.x + entity.width / 2) * 2, (entity.y + entity.height / 2) * 2, 2, 0, 2 * Math.PI);
         this.shaders.fill();
 
         /*for (let shaderX = 0; shaderX < this.shaders.canvas.width; shaderX += 3) {
@@ -111,7 +121,7 @@ export class Display {
             }
         }
     }
-    drawPlayer(x, y) {
+    drawPlayer(x, y, frame) {
         this.buffer.drawImage(
             this.player.image,
             2,
@@ -122,6 +132,17 @@ export class Display {
             Math.round(y),
             this.player.tileSize,
             this.player.tileSize
+        );
+        this.buffer.drawImage(
+            this.fire.image,
+            frame * this.fire.tileSize,
+            0,
+            this.fire.tileSize,
+            this.fire.tileSize,
+            Math.round(x) - 4,
+            Math.round(y) - 6,
+            this.fire.tileSize,
+            this.fire.tileSize
         );
     }
     drawBackground(worldColumns, worldRows) {
